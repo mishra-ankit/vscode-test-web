@@ -22,7 +22,11 @@ interface IDevelopmentOptions {
 interface IWorkbenchOptions {
 	additionalBuiltinExtensions?: (string | URIComponents | GalleryExtensionInfo)[];
 	developmentOptions?: IDevelopmentOptions;
+	productConfiguration?: { [key: string]: any };
+
+	// options of the builtin workbench (vs/code/browser/workbench/workbench)
 	folderUri?: URIComponents;
+	workspaceUri?: URIComponents;
 }
 
 function asJSON(value: unknown): string {
@@ -70,13 +74,14 @@ async function getWorkbenchOptions(
 ): Promise<IWorkbenchOptions> {
 	const options: IWorkbenchOptions = {};
 	if (config.extensionPaths) {
-		await Promise.all(config.extensionPaths.map(async (extensionPath, index) => {
-			options.additionalBuiltinExtensions = await scanForExtensions(extensionPath, {
+		const extensionPromises = config.extensionPaths.map((extensionPath, index) => {
+			return scanForExtensions(extensionPath, {
 				scheme: ctx.protocol,
 				authority: ctx.host,
 				path: `/static/extensions/${index}`,
 			});
-		}));
+		});
+		options.additionalBuiltinExtensions = (await Promise.all(extensionPromises)).flat();
 	}
 	if (config.extensionIds) {
 		if (!options.additionalBuiltinExtensions) {
@@ -112,7 +117,10 @@ async function getWorkbenchOptions(
 		options.folderUri = URI.parse(fsProviderFolderUri);
 	} else if (config.folderUri) {
 		options.folderUri = URI.parse(config.folderUri);
+	} else {
+		options.workspaceUri = URI.from({ scheme: 'tmp', path: `/default.code-workspace` });
 	}
+	options.productConfiguration = { enableTelemetry: false };
 	return options;
 }
 
