@@ -42,6 +42,7 @@ class Workbench {
 		};
 
 		try {
+			console.log("FANCY WORKBEANCH!!!!!!!!!!!!")
 			const workbenchTemplate = (await fs.readFile(path.resolve(__dirname, '../../views/workbench.html'))).toString();
 			return workbenchTemplate.replace(/\{\{([^}]+)\}\}/g, (_, key) => values[key] ?? 'undefined');
 		} catch (e) {
@@ -81,7 +82,7 @@ async function getWorkbenchOptions(
 		if (!options.additionalBuiltinExtensions) {
 			options.additionalBuiltinExtensions = [];
 		}
-		
+
 		options.additionalBuiltinExtensions.push(...config.extensionIds);
 	}
 	if (config.extensionDevelopmentPath) {
@@ -138,6 +139,12 @@ export default function (config: IConfig): Router.Middleware {
 		const options = await getWorkbenchOptions(ctx, config);
 		ctx.body = await ctx.state.workbench.render(options);
 	});
+
+	// catch all
+	// router.get('*', async ctx => {
+	// 	ctx.status = 404;
+	// 	ctx.body = 'Not found CUSTOM!!!!';
+	// });
 
 	return router.routes();
 }

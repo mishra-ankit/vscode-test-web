@@ -9,7 +9,7 @@
 import { IConfig, runServer, Static, Sources } from './server/main';
 import { downloadAndUnzipVSCode, directoryExists, fileExists } from './server/download';
 
-import * as playwright from 'playwright';
+// import * as playwright from 'playwright';
 import * as minimist from 'minimist';
 import * as path from 'path';
 
@@ -140,57 +140,6 @@ export interface Disposable {
 	dispose(): void;
 }
 
-/**
- * Runs the tests in a browser.
- *
- * @param options The options defining browser type, extension and test location.
- */
-export async function runTests(options: Options & { extensionTestsPath: string }): Promise<void> {
-	const config: IConfig = {
-		extensionDevelopmentPath: options.extensionDevelopmentPath,
-		extensionTestsPath: options.extensionTestsPath,
-		build: await getBuild(options),
-		folderUri: options.folderUri,
-		folderMountPath: options.folderPath,
-		printServerLog: options.printServerLog ?? options.hideServerLog === false,
-		extensionPaths: options.extensionPaths,
-		extensionIds: options.extensionIds
-	};
-
-
-	const host = options.host ?? 'localhost';
-	const port = options.port ?? 3000;
-	const server = await runServer(host, port, config);
-
-	return new Promise(async (s, e) => {
-
-		const endpoint = `http://${host}:${port}`;
-		const context = await openBrowser(endpoint, options);
-		if (context) {
-			context.once('close', () => server.close());
-			await context.exposeFunction('codeAutomationLog', (type: 'warn' | 'error' | 'info', args: unknown[]) => {
-				console[type](...args);
-			});
-
-			await context.exposeFunction('codeAutomationExit', async (code: number) => {
-				try {
-					await context.browser()?.close();
-				} catch (error) {
-					console.error(`Error when closing browser: ${error}`);
-				}
-				server.close();
-				if (code === 0) {
-					s();
-				} else {
-					e(new Error('Test failed'));
-				}
-			});
-		} else {
-			server.close();
-			e(new Error('Can not run test as opening of browser failed.'));
-		}
-	});
-}
 
 async function getBuild(options: Options): Promise<Static | Sources> {
 	if (options.vsCodeDevPath) {
@@ -203,7 +152,7 @@ async function getBuild(options: Options): Promise<Static | Sources> {
 	return await downloadAndUnzipVSCode(quality === 'stable' ? 'stable' : 'insider');
 }
 
-export async function open(options: Options): Promise<Disposable> {
+export async function open(options: Options): Promise<any> {
 	const config: IConfig = {
 		extensionDevelopmentPath: options.extensionDevelopmentPath,
 		extensionTestsPath: options.extensionTestsPath,
@@ -217,75 +166,19 @@ export async function open(options: Options): Promise<Disposable> {
 
 	const host = options.host ?? 'localhost';
 	const port = options.port ?? 3000;
-	const server = await runServer(host, port, config);
+	await runServer(host, port, config);
 
-	const endpoint = `http://${host}:${port}`;
-	const context = await openBrowser(endpoint, options);
-	context?.once('close', () => server.close());
+	// const endpoint = `http://${host}:${port}`;
+	// const context = await openBrowser(endpoint, options);
+	// context?.once('close', () => server.close());
 
-	return {
-		dispose: () => {
-			server.close();
-			context?.browser()?.close();
-		}
-	}
+	// return {
+	// 	dispose: () => {
+	// 		server.close();
+	// 		context?.browser()?.close();
+	// 	}
+	// }
 
-}
-
-async function openBrowser(endpoint: string, options: Options): Promise<playwright.BrowserContext | undefined> {
-	if (options.browserType === 'none') {
-		return undefined;
-	}
-
-	const browserType = await playwright[options.browserType];
-	if (!browserType) {
-		console.error(`Can not open browser type: ${options.browserType}`);
-		return undefined;
-	}
-
-	const args: string[] = []
-	if (process.platform === 'linux' && options.browserType === 'chromium') {
-		args.push('--no-sandbox');
-	}
-
-	if (options.waitForDebugger) {
-		args.push(`--remote-debugging-port=${options.waitForDebugger}`);
-	}
-
-	const headless = options.headless ?? options.extensionTestsPath !== undefined;
-
-	const browser = await browserType.launch({ headless, args, devtools: options.devTools });
-	const context = await browser.newContext({ viewport: null });
-	if (options.permissions) {
-		context.grantPermissions(options.permissions);
-	}
-
-	// forcefully close browser if last page is closed. workaround for https://github.com/microsoft/playwright/issues/2946
-	let openPages = 0;
-	context.on('page', page => {
-		openPages++;
-		page.once('close', () => {
-			openPages--;
-			if (openPages === 0) {
-				browser.close();
-			}
-		})
-	});
-
-
-	const page = context.pages()[0] ?? await context.newPage();
-	if (options.waitForDebugger) {
-		await page.waitForFunction(() => '__jsDebugIsReady' in globalThis);
-	}
-	if (options.verbose) {
-		page.on('console', (message) => {
-			console.log(message.text());
-		})
-	}
-
-	await page.goto(endpoint);
-
-	return context;
 }
 
 function validateStringOrUndefined(options: CommandLineOptions, name: keyof CommandLineOptions): string | undefined {
@@ -535,7 +428,7 @@ async function cliMain(): Promise<void> {
 	}
 
 	const browserType = valdiateBrowserType(args);
-	const extensionTestsPath = await validatePathOrUndefined(args, 'extensionTestsPath', true);
+	// const extensionTestsPath = await validatePathOrUndefined(args, 'extensionTestsPath', true);
 	const extensionDevelopmentPath = await validatePathOrUndefined(args, 'extensionDevelopmentPath');
 	const extensionPaths = await valdiateExtensionPaths(args.extensionPath);
 	const extensionIds = await valdiateExtensionIds(args.extensionId);
@@ -566,30 +459,6 @@ async function cliMain(): Promise<void> {
 		}
 	}
 
-	if (extensionTestsPath) {
-		runTests({
-			extensionTestsPath,
-			extensionDevelopmentPath,
-			browserType,
-			quality,
-			devTools,
-			waitForDebugger,
-			folderUri,
-			folderPath,
-			headless,
-			printServerLog: printServerLog,
-			permissions,
-			extensionPaths,
-			extensionIds,
-			vsCodeDevPath,
-			verbose,
-			host,
-			port
-		}).catch(e => {
-			console.log(e.message);
-			process.exit(1);
-		})
-	} else {
 		open({
 			extensionDevelopmentPath,
 			browserType,
@@ -608,7 +477,6 @@ async function cliMain(): Promise<void> {
 			host,
 			port
 		})
-	}
 }
 
 if (require.main === module) {
