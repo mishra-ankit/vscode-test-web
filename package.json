@@ -19,7 +19,7 @@
     "vscode-test-web": "./out/index.js"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=14.x"
   },
   "dependencies": {
     "@koa/cors": "^3.2.0",
