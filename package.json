@@ -3,7 +3,7 @@
   "version": "0.0.24",
   "scripts": {
     "install-extensions": "yarn --cwd=fs-provider && yarn --cwd=sample",
-    "compile": "tsc -p ./ && yarn compile-fs-provider",
+    "compile": "tsc -p ./",
     "watch": "tsc -w -p ./",
     "prepublishOnly": "yarn compile",
     "test": "eslint src --ext ts && tsc --noEmit",
