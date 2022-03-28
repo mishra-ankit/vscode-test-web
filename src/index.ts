@@ -167,18 +167,6 @@ export async function open(options: Options): Promise<any> {
 	const host = options.host ?? 'localhost';
 	const port = options.port ?? 3000;
 	await runServer(host, port, config);
-
-	// const endpoint = `http://${host}:${port}`;
-	// const context = await openBrowser(endpoint, options);
-	// context?.once('close', () => server.close());
-
-	// return {
-	// 	dispose: () => {
-	// 		server.close();
-	// 		context?.browser()?.close();
-	// 	}
-	// }
-
 }
 
 function validateStringOrUndefined(options: CommandLineOptions, name: keyof CommandLineOptions): string | undefined {
