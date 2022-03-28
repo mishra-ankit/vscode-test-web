@@ -21,9 +21,8 @@ interface DownloadInfo {
 	version: string;
 }
 
-const extensionRoot = process.cwd();
-const vscodeTestDir = path.resolve(extensionRoot, '.vscode-test-web');
-
+const folderName = `vscode-web-stable`;
+export const downloadedPath = path.resolve( process.cwd(), folderName);
 
 async function getLatestVersion(quality: 'stable' | 'insider'): Promise<DownloadInfo> {
 	const update: DownloadInfo = await fetchJSON(`https://update.code.visualstudio.com/api/update/web-standalone/${quality}/latest`);
@@ -90,18 +89,9 @@ async function unzip(source: string, destination: string, message: string) {
 export async function downloadAndUnzipVSCode(quality: 'stable' | 'insider'): Promise<Static> {
 	const info = await getLatestVersion(quality);
 
-	const folderName = `vscode-web-${quality}-${info.version}`;
-
-	const downloadedPath = path.resolve(vscodeTestDir, folderName);
 	if (existsSync(downloadedPath) && existsSync(path.join(downloadedPath, 'version'))) {
 		return { type: 'static', location: downloadedPath, quality, version: info.version };
 	}
-
-	if (existsSync(vscodeTestDir)) {
-		await fs.rmdir(vscodeTestDir, { recursive: true, maxRetries: 5 });
-	}
-
-	await fs.mkdir(vscodeTestDir, { recursive: true });
 
 	const productName = `VS Code ${quality === 'stable' ? 'Stable' : 'Insiders'}`;
 
