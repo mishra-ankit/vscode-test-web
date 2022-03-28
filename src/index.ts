@@ -329,27 +329,27 @@ async function validatePath(loc: string, isFile?: boolean): Promise<string> {
 	return loc;
 }
 
-function validateQuality(quality: unknown, version: unknown, vsCodeDevPath: string | undefined): VSCodeQuality | undefined {
-	if (version) {
-		console.log(`--version has been replaced by --quality`);
-		quality = quality || version;
-	}
+// function validateQuality(quality: unknown, version: unknown, vsCodeDevPath: string | undefined): VSCodeQuality | undefined {
+// 	if (version) {
+// 		console.log(`--version has been replaced by --quality`);
+// 		quality = quality || version;
+// 	}
 
-	if (vsCodeDevPath && quality) {
-		console.log(`Sources folder is provided as input, quality is ignored.`);
-		return undefined;
-	}
-	if (quality === undefined || ((typeof quality === 'string') && ['insiders', 'stable'].includes(quality))) {
-		return quality as VSCodeQuality;
-	}
-	if (version === 'sources') {
-		console.log(`Instead of version=sources use 'sourcesPath' with the location of the VS Code repository.`);
-	} else {
-		console.log(`Invalid quality.`);
-	}
-	showHelp();
-	process.exit(-1);
-}
+// 	if (vsCodeDevPath && quality) {
+// 		console.log(`Sources folder is provided as input, quality is ignored.`);
+// 		return undefined;
+// 	}
+// 	if (quality === undefined || ((typeof quality === 'string') && ['insiders', 'stable'].includes(quality))) {
+// 		return quality as VSCodeQuality;
+// 	}
+// 	if (version === 'sources') {
+// 		console.log(`Instead of version=sources use 'sourcesPath' with the location of the VS Code repository.`);
+// 	} else {
+// 		console.log(`Invalid quality.`);
+// 	}
+// 	showHelp();
+// 	process.exit(-1);
+// }
 
 function validatePortNumber(port: unknown): number | undefined {
 	if (typeof port === 'string') {
@@ -429,11 +429,11 @@ async function cliMain(): Promise<void> {
 
 	const browserType = valdiateBrowserType(args);
 	// const extensionTestsPath = await validatePathOrUndefined(args, 'extensionTestsPath', true);
-	const extensionDevelopmentPath = await validatePathOrUndefined(args, 'extensionDevelopmentPath');
+	// const extensionDevelopmentPath = await validatePathOrUndefined(args, 'extensionDevelopmentPath');
 	const extensionPaths = await valdiateExtensionPaths(args.extensionPath);
 	const extensionIds = await valdiateExtensionIds(args.extensionId);
 	const vsCodeDevPath = await validatePathOrUndefined(args, 'sourcesPath');
-	const quality = validateQuality(args.quality, args.version, vsCodeDevPath);
+	// const quality = validateQuality(args.quality, args.version, vsCodeDevPath);
 	const devTools = validateBooleanOrUndefined(args, 'open-devtools');
 	const headless = validateBooleanOrUndefined(args, 'headless');
 	const permissions = valdiatePermissions(args.permission);
@@ -460,9 +460,9 @@ async function cliMain(): Promise<void> {
 	}
 
 		open({
-			extensionDevelopmentPath,
+			extensionDevelopmentPath : '',
 			browserType,
-			quality,
+			quality : 'stable',
 			devTools,
 			waitForDebugger,
 			folderUri,
