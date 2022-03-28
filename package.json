@@ -22,27 +22,15 @@
     "node": ">=14.x"
   },
   "dependencies": {
-    "@koa/cors": "^3.2.0",
-    "@koa/router": "^10.1.1",
     "decompress": "^4.2.1",
     "decompress-targz": "^4.1.1",
     "http-proxy-agent": "^5.0.0",
     "https-proxy-agent": "^5.0.0",
-    "koa": "^2.13.4",
-    "koa-morgan": "^1.0.1",
-    "koa-mount": "^4.0.0",
-    "koa-static": "^5.0.0",
     "minimist": "^1.2.6",
-    "playwright": "^1.20.1",
     "vscode-uri": "^3.0.3"
   },
   "devDependencies": {
     "@types/decompress": "^4.2.4",
-    "@types/koa": "^2.13.4",
-    "@types/koa__router": "^8.0.11",
-    "@types/koa-morgan": "^1.0.5",
-    "@types/koa-mount": "^4.0.1",
-    "@types/koa-static": "^4.0.2",
     "@types/minimist": "^1.2.2",
     "@types/node": "^12.19.9",
     "@typescript-eslint/eslint-plugin": "^5.16.0",

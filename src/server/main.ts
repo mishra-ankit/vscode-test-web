@@ -3,8 +3,6 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import createApp from './app';
-
 export interface IConfig {
 	readonly extensionPaths: string[] | undefined;
 	readonly extensionIds: GalleryExtensionInfo[] | undefined;
@@ -40,12 +38,5 @@ export interface CDN {
 
 export interface IServer {
 	close(): void;
-}
-
-export async function runServer(host: string, port: number | undefined, config: IConfig): Promise<IServer> {
-	const app = await createApp(config);
-	const server = app.listen(port, host);
-	console.log(`Listening on http://${host}:${port}`);
-	return server;
 }
 
