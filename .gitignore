@@ -7,3 +7,4 @@ fs-provider/dist
 
 .vercel
 vscode-web-stable/
+static/
