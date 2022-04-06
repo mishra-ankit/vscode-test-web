@@ -1,6 +1,7 @@
 console.log('Hello from sw.js');
 
 self.addEventListener("install", event => {
+    self.skipWaiting();
     console.log("Service worker installed");
 });
 self.addEventListener("activate", event => {
