@@ -1,12 +1,12 @@
 {
-  "name": "vscode-web",
-  "version": "0.0.24",
+  "name": "vscode-web-standalone",
+  "version": "0.0.20",
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -w -p ./",
     "prepublishOnly": "yarn compile",
     "test": "eslint src --ext ts && tsc --noEmit",
-    "preversion": "npm test",
+    "preversion": "yarn test",
     "postversion": "git push && git push --tags",
     "copy-patch": "ncp patch/ vscode-web-stable/",
     "watch-patch": "nodemon --watch patch --exec \"yarn run copy-patch\"",
@@ -18,7 +18,7 @@
     "vscode-test-web": "./out/index.js"
   },
   "engines": {
-    "node": ">=14.x"
+    "node": ">=12.x"
   },
   "dependencies": {
     "decompress": "^4.2.1",

@@ -12,3 +12,8 @@ yarn
 yarn build
 yarn serve
 ```
+
+TODO -
+
+- [ ] add customizability, e.g. user provided JSON to control
+- [ ] publish as npm package
