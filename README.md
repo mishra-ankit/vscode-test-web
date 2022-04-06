@@ -17,3 +17,6 @@ TODO -
 
 - [ ] add customizability, e.g. user provided JSON to control
 - [ ] publish as npm package
+- [ ] remove dependency on hardcoded CORS proxy
+- [ ] add tests
+- [ ] add github action to update on new releases of VS Code
