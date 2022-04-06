@@ -12,7 +12,7 @@
     "compile-fs-provider": "yarn --cwd=fs-provider compile-web",
     "compile-sample": "yarn --cwd=sample compile-web",
     "sample": "npm run compile && npm run compile-sample && node . --extensionDevelopmentPath=sample sample/test-workspace",
-    "build": "npm run compile && node . && ncp workbench-default.html vscode-web-stable/index.html",
+    "build": "npm run compile && node . && ncp workbench-default.html vscode-web-stable/index.html && ncp sw.js vscode-web-stable/sw.js",
     "serve": "serve vscode-web-stable --cors -p 1234 --single"
   },
   "main": "./out/index.js",

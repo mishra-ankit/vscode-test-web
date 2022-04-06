@@ -13,6 +13,7 @@
 		"Other"
 	],
 	"activationEvents": [
+		"*",
 		"onFileSystem:vscode-test-web"
 	],
 	"contributes": {
