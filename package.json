@@ -10,7 +10,7 @@
     "postversion": "git push && git push --tags",
     "copy-patch": "ncp patch/ vscode-web-stable/",
     "watch-patch": "nodemon --watch patch --exec \"yarn run copy-patch\"",
-    "build": "npm run compile && node .",
+    "build": "yarn run compile && node . && yarn run copy-patch",
     "serve": "serve vscode-web-stable --cors -p 1234 --single"
   },
   "main": "./out/index.js",
