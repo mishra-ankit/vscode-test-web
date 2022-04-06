@@ -5,6 +5,6 @@ out
 sample/dist
 
 .vercel
-vscode-web-stable/
+public/
 static/
 IGNORED

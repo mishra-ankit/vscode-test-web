@@ -1,8 +1,3 @@
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
-
 import { promises as fs, existsSync, createWriteStream } from 'fs';
 import * as path from 'path';
 
@@ -14,14 +9,18 @@ import { URL } from 'url';
 
 import * as decompress from 'decompress';
 import * as decompressTargz from 'decompress-targz';
-import { Static } from './main';
-
+interface Static {
+	readonly type: 'static';
+	readonly location: string;
+	readonly quality: 'stable' | 'insider';
+	readonly version: string;
+}
 interface DownloadInfo {
 	url: string;
 	version: string;
 }
 
-const folderName = `vscode-web-stable`;
+const folderName = `public`;
 export const downloadedPath = path.resolve( process.cwd(), folderName);
 
 async function getLatestVersion(quality: 'stable' | 'insider'): Promise<DownloadInfo> {
