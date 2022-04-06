@@ -20,7 +20,7 @@
 		/>
 
 		<!-- Workbench Configuration -->
-		<meta id="vscode-workbench-web-configuration" data-settings="" />
+		<meta id="vscode-workbench-web-configuration" data-settings="{}" />
 
 		<!-- Workbench Auth Session -->
 		<meta id="vscode-workbench-auth-session" data-settings="" />
@@ -39,20 +39,20 @@
 
 	<script>
 		// set data-setting attr on id 'vscode-workbench-web-configuration'
-		document.getElementById('vscode-workbench-web-configuration').setAttribute(
-			'data-settings',
-			JSON.stringify({
-				configurationDefaults: {
-					'workbench.startupEditor': 'none',
-				},
-				folderUri: {
-					$mid: 1,
-					path: '/',
-					scheme: 'customscheme',
-					authority: 'mount',
-				},
-			})
-		);
+		// document.getElementById('vscode-workbench-web-configuration').setAttribute(
+		// 	'data-settings',
+		// 	JSON.stringify({
+		// 		configurationDefaults: {
+		// 			'workbench.startupEditor': 'none',
+		// 		},
+		// 		folderUri: {
+		// 			$mid: 1,
+		// 			path: '/',
+		// 			scheme: 'customscheme',
+		// 			authority: 'mount',
+		// 		},
+		// 	})
+		// );
 	</script>
 
 	<!-- Startup (do not modify order of script tags!) -->
