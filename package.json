@@ -2,17 +2,15 @@
   "name": "vscode-web",
   "version": "0.0.24",
   "scripts": {
-    "install-extensions": "yarn --cwd=fs-provider && yarn --cwd=sample",
     "compile": "tsc -p ./",
     "watch": "tsc -w -p ./",
     "prepublishOnly": "yarn compile",
     "test": "eslint src --ext ts && tsc --noEmit",
     "preversion": "npm test",
     "postversion": "git push && git push --tags",
-    "compile-fs-provider": "yarn --cwd=fs-provider compile-web",
-    "compile-sample": "yarn --cwd=sample compile-web",
-    "sample": "npm run compile && npm run compile-sample && node . --extensionDevelopmentPath=sample sample/test-workspace",
-    "build": "npm run compile && node . && ncp workbench-default.html vscode-web-stable/index.html && ncp sw.js vscode-web-stable/sw.js",
+    "copy-patch": "ncp patch/ vscode-web-stable/",
+    "watch-patch": "nodemon --watch patch --exec \"yarn run copy-patch\"",
+    "build": "npm run compile && node .",
     "serve": "serve vscode-web-stable --cors -p 1234 --single"
   },
   "main": "./out/index.js",
@@ -32,6 +30,7 @@
     "vscode-uri": "^3.0.3"
   },
   "devDependencies": {
+    "nodemon": "^2.0.15",
     "@types/decompress": "^4.2.4",
     "@types/minimist": "^1.2.2",
     "@types/node": "^12.19.9",

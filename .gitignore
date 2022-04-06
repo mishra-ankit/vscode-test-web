@@ -3,7 +3,6 @@
 node_modules
 out
 sample/dist
-fs-provider/dist
 
 .vercel
 vscode-web-stable/

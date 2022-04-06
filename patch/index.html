@@ -39,20 +39,14 @@
 
 	<script>
 		// set data-setting attr on id 'vscode-workbench-web-configuration'
-		// document.getElementById('vscode-workbench-web-configuration').setAttribute(
-		// 	'data-settings',
-		// 	JSON.stringify({
-		// 		configurationDefaults: {
-		// 			'workbench.startupEditor': 'none',
-		// 		},
-		// 		folderUri: {
-		// 			$mid: 1,
-		// 			path: '/',
-		// 			scheme: 'customscheme',
-		// 			authority: 'mount',
-		// 		},
-		// 	})
-		// );
+		document.getElementById('vscode-workbench-web-configuration').setAttribute(
+			'data-settings',
+			JSON.stringify({
+				configurationDefaults: {
+					'workbench.startupEditor': 'none',
+				},
+			})
+		);
 	</script>
 
 	<!-- Startup (do not modify order of script tags!) -->
